@@ -1,0 +1,254 @@
+:root {
+  color-scheme: light dark;
+  --bg: #eef6ff;
+  --card: #ffffff;
+  --ink: #14283c;
+  --mute: #5a6e82;
+  --line: #cfe0f2;
+  --pri: #1f6fe0;
+  --on: #ffffff;
+  --win: #fff7d6;
+  --winl: #f2b900;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1b2a;
+    --card: #182a3f;
+    --ink: #eaf2fb;
+    --mute: #9db3c9;
+    --line: #2a4260;
+    --pri: #5b9bff;
+    --on: #08121f;
+    --win: #3a3210;
+    --winl: #f2c633;
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #eef6ff;
+  --card: #ffffff;
+  --ink: #14283c;
+  --mute: #5a6e82;
+  --line: #cfe0f2;
+  --pri: #1f6fe0;
+  --on: #ffffff;
+  --win: #fff7d6;
+  --winl: #f2b900;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0f1b2a;
+  --card: #182a3f;
+  --ink: #eaf2fb;
+  --mute: #9db3c9;
+  --line: #2a4260;
+  --pri: #5b9bff;
+  --on: #08121f;
+  --win: #3a3210;
+  --winl: #f2c633;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+body {
+  margin: 0;
+  padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+  background: var(--bg);
+  color: var(--ink);
+  font: 17px/1.5 "Baloo 2", "Nunito", "Trebuchet MS", "PingFang TC",
+    "Microsoft JhengHei", sans-serif;
+}
+
+main {
+  width: min(100%, 752px);
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: clamp(1.7rem, 5vw, 2rem);
+  line-height: 1.15;
+}
+
+h2 {
+  margin: 26px 0 10px;
+  font-size: 1.2rem;
+}
+
+.sub {
+  margin: 0;
+  color: var(--mute);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
+  gap: 10px;
+}
+
+.opt {
+  min-height: 92px;
+  padding: 14px 10px;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 120ms ease, transform 120ms ease;
+}
+
+.opt:hover {
+  transform: translateY(-1px);
+}
+
+.opt .e {
+  display: block;
+  font-size: 2rem;
+}
+
+.opt small {
+  display: block;
+  color: var(--mute);
+}
+
+.opt[aria-pressed="true"] {
+  border-color: var(--pri);
+  background: var(--pri);
+  color: var(--on);
+}
+
+.opt[aria-pressed="true"] small {
+  color: inherit;
+}
+
+.opt:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid var(--winl);
+  outline-offset: 3px;
+}
+
+.best {
+  margin-top: 8px;
+  padding: 18px;
+  border: 3px solid var(--winl);
+  border-radius: 22px;
+  background: var(--win);
+}
+
+.badge {
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.journey {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0;
+  font-size: 2.2rem;
+  overflow-wrap: anywhere;
+}
+
+.journey .ar {
+  color: var(--mute);
+  font-size: 1.4rem;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.stat {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  font-weight: 700;
+}
+
+.why {
+  margin: 10px 0 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: var(--card);
+}
+
+.alt {
+  margin-bottom: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+}
+
+.alt .journey {
+  margin: 4px 0;
+  font-size: 1.5rem;
+}
+
+.alt .stats {
+  margin: 4px 0 0;
+}
+
+.alt .stat {
+  padding: 2px 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.btn {
+  margin-top: 24px;
+  padding: 12px 26px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--pri);
+  color: var(--on);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn:hover {
+  filter: brightness(1.06);
+}
+
+.note {
+  margin-top: 22px;
+  color: var(--mute);
+  font-size: 0.85rem;
+}
+
+.empty {
+  padding: 18px;
+  border: 2px dashed var(--line);
+  border-radius: 16px;
+  background: var(--card);
+  color: var(--mute);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}

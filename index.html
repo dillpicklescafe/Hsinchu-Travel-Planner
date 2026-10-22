@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eef6ff">
+  <title>Hsinchu Adventure Planner</title>
+  <link rel="stylesheet" href="index.css">
+  <script src="index.js" defer></script>
+</head>
+<body>
+  <main>
+    <h1>🧭 Hsinchu Adventure Planner</h1>
+    <p class="sub">Start: Hsinchu Station. Pick where you want to go and what matters most.</p>
+
+    <section aria-labelledby="dest-heading">
+      <h2 id="dest-heading">Where are you going?</h2>
+      <div class="grid" id="dest"></div>
+    </section>
+
+    <section aria-labelledby="goal-heading">
+      <h2 id="goal-heading">What matters most?</h2>
+      <div class="grid" id="goal"></div>
+    </section>
+
+    <section id="result" aria-live="polite" aria-atomic="true"></section>
+
+    <button class="btn" id="reset" type="button">↺ Start Again</button>
+    <p class="note">Times, prices and emissions are estimated classroom-demo data. They can be replaced later with live transit, fare, traffic and YouBike information.</p>
+  </main>
+</body>
+</html>
