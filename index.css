@@ -27,7 +27,7 @@
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #eef6ff;
+  --bg: #cfe5ff;
   --card: #ffffff;
   --ink: #14283c;
   --mute: #5a6e82;
@@ -64,30 +64,39 @@ body {
   padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
   background: var(--bg);
   color: var(--ink);
-  font: 17px/1.5 "Baloo 2", "Nunito", "Trebuchet MS", "PingFang TC",
+  font: 17px/1.5 "Fredoka", "Trebuchet MS", "PingFang TC",
     "Microsoft JhengHei", sans-serif;
+  font-optical-sizing: auto;
 }
 
 main {
   width: min(100%, 752px);
-  margin: 0 auto;
-  padding: 24px 16px 48px;
+  background: #fff2be;
+  border: 5px solid #85c0ff;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 1rem;
 }
 
 h1 {
   margin: 0 0 4px;
-  font-size: clamp(1.7rem, 5vw, 2rem);
+  text-align: center;
+  font-size: 3rem;
   line-height: 1.15;
+  font-weight: 500;
+  color: #392808;
 }
 
 h2 {
   margin: 26px 0 10px;
   font-size: 1.2rem;
+  font-weight: 500;
 }
 
 .sub {
-  margin: 0;
-  color: var(--mute);
+  margin: 1rem 4rem;
+  text-align: center;
+  color: #75b8ff;
 }
 
 .grid {
