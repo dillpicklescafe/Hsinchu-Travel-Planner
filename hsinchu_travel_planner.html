@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hsinchu Travel Planner</title>
+  <!-- Load Tailwind CSS for responsive, clean styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Load friendly, easy-to-read Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* Use friendly rounded typography and a soft warm background */
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #FFFDF7;
+      color: #1E293B;
+    }
+
+    h1, h2, h3, h4, .font-display {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+    }
+
+    /* Smooth pop-in animation when updating route cards */
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .pop-in {
+      animation: popIn 0.25s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Header Banner -->
+  <header class="bg-gradient-to-r from-sky-500 via-cyan-500 to-teal-500 text-white shadow-md">
+    <div class="max-w-3xl mx-auto px-4 py-6 text-center">
+      <div class="inline-flex items-center gap-2 bg-white/20 px-3.5 py-1 rounded-full text-xs sm:text-sm font-extrabold mb-2">
+        <span aria-hidden="true">✈️</span>
+        <span>Start: Taoyuan International Airport</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-wide">
+        Hsinchu Travel Planner
+      </h1>
+      <p class="text-sm sm:text-base text-sky-50 font-semibold mt-1.5 max-w-xl mx-auto">
+        Pick where you want to go in Hsinchu and choose what matters most on your trip!
+      </p>
+    </div>
+  </header>
+
+  <!-- Main Planner Container -->
+  <main class="flex-1 max-w-3xl w-full mx-auto px-4 py-6 space-y-6">
+
+    <!-- Helpful Starting Note -->
+    <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-4 flex items-start gap-3">
+      <span class="text-2xl shrink-0" aria-hidden="true">🛫</span>
+      <p class="text-sm sm:text-base text-sky-950 font-semibold leading-relaxed">
+        <strong>Trip Tip:</strong> Every route starts at <strong>Taoyuan International Airport</strong> and heads down to Hsinchu City. Walks and bike rides are only used for short city hops, never from the airport!
+      </p>
+    </div>
+
+    <!-- Step 1: Choose Destination -->
+    <section aria-labelledby="step1-heading" class="bg-white rounded-3xl border-2 border-slate-200 shadow-sm p-5 sm:p-6">
+      <h2 id="step1-heading" class="text-xl font-bold text-slate-900 mb-3.5 flex items-center gap-2.5">
+        <span class="bg-amber-100 text-amber-800 w-8 h-8 rounded-full inline-flex items-center justify-center text-base font-extrabold shrink-0">
+          1
+        </span>
+        <span>Where do you want to visit?</span>
+      </h2>
+
+      <div id="destination-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- Destination buttons rendered dynamically via JavaScript -->
+      </div>
+    </section>
+
+    <!-- Step 2: Choose Travel Priority -->
+    <section aria-labelledby="step2-heading" class="bg-white rounded-3xl border-2 border-slate-200 shadow-sm p-5 sm:p-6">
+      <h2 id="step2-heading" class="text-xl font-bold text-slate-900 mb-3.5 flex items-center gap-2.5">
+        <span class="bg-emerald-100 text-emerald-800 w-8 h-8 rounded-full inline-flex items-center justify-center text-base font-extrabold shrink-0">
+          2
+        </span>
+        <span>What matters most to you?</span>
+      </h2>
+
+      <div id="priority-grid" class="grid grid-cols-3 gap-2.5 sm:gap-3">
+        <button
+          type="button"
+          id="btn-fastest"
+          onclick="selectPriority('fastest')"
+          class="p-3 sm:p-4 rounded-2xl border-2 font-bold text-center transition cursor-pointer flex flex-col items-center justify-center gap-1"
+        >
+          <span class="text-2xl sm:text-3xl" aria-hidden="true">⚡</span>
+          <span class="text-sm sm:text-base font-extrabold">Fastest</span>
+          <span class="text-xs font-semibold opacity-80 hidden sm:inline">Save time</span>
+        </button>
+
+        <button
+          type="button"
+          id="btn-cheapest"
+          onclick="selectPriority('cheapest')"
+          class="p-3 sm:p-4 rounded-2xl border-2 font-bold text-center transition cursor-pointer flex flex-col items-center justify-center gap-1"
+        >
+          <span class="text-2xl sm:text-3xl" aria-hidden="true">💰</span>
+          <span class="text-sm sm:text-base font-extrabold">Cheapest</span>
+          <span class="text-xs font-semibold opacity-80 hidden sm:inline">Save money</span>
+        </button>
+
+        <button
+          type="button"
+          id="btn-greenest"
+          onclick="selectPriority('greenest')"
+          class="p-3 sm:p-4 rounded-2xl border-2 font-bold text-center transition cursor-pointer flex flex-col items-center justify-center gap-1"
+        >
+          <span class="text-2xl sm:text-3xl" aria-hidden="true">🌱</span>
+          <span class="text-sm sm:text-base font-extrabold">Greenest</span>
+          <span class="text-xs font-semibold opacity-80 hidden sm:inline">Help Earth</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 3: Main Selected Route Card -->
+    <section id="main-route-card" aria-labelledby="route-headline" class="bg-white rounded-3xl border-2 border-slate-200 shadow-md overflow-hidden pop-in">
+      <div id="route-banner" class="p-5 sm:p-6 border-b-2 border-slate-100">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <span id="route-badge" class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-sm font-extrabold">
+            ⚡ Fastest Route
+          </span>
+          <span id="route-dest-pill" class="text-xs sm:text-sm font-bold text-slate-700 bg-white px-3 py-1 rounded-full border border-slate-200">
+            🏰 East Gate
+          </span>
+        </div>
+
+        <h3 id="route-headline" class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
+          <!-- Main route title -->
+        </h3>
+        <p id="route-summary" class="text-sm sm:text-base text-slate-700 font-semibold mt-1 leading-relaxed">
+          <!-- Main route summary -->
+        </p>
+
+        <!-- Time and Cost Stats -->
+        <div class="grid grid-cols-2 gap-3 sm:gap-4 mt-5">
+          <div class="bg-white rounded-2xl p-4 border-2 border-slate-200/80 text-center">
+            <div class="text-xs sm:text-sm font-extrabold uppercase tracking-wide text-slate-500">
+              ⏱️ Estimated Time
+            </div>
+            <div id="stat-time" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
+              -- mins
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl p-4 border-2 border-slate-200/80 text-center">
+            <div class="text-xs sm:text-sm font-extrabold uppercase tracking-wide text-slate-500">
+              💵 Estimated Cost
+            </div>
+            <div id="stat-cost" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
+              NT$ --
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step-by-Step Instructions -->
+      <div class="p-5 sm:p-6">
+        <h4 class="text-lg font-extrabold text-slate-800 mb-3.5">
+          🗺️ Step-by-Step Steps
+        </h4>
+        <ol id="step-list" class="space-y-3">
+          <!-- Steps populated dynamically -->
+        </ol>
+      </div>
+
+      <!-- Kid-Friendly Tip -->
+      <div class="bg-amber-50 border-t-2 border-amber-200 p-5 sm:px-6 flex items-start gap-3.5">
+        <span class="text-2xl sm:text-3xl shrink-0" aria-hidden="true">💡</span>
+        <div>
+          <div class="text-xs sm:text-sm font-extrabold uppercase tracking-wide text-amber-900">
+            Friendly Tip
+          </div>
+          <p id="route-tip" class="text-sm sm:text-base text-amber-950 font-semibold mt-0.5 leading-relaxed">
+            <!-- Tip populated dynamically -->
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prominent Other Possible Routes Section (Always renders 2 dynamic alternative cards) -->
+    <section id="other-routes-section" aria-labelledby="other-routes-heading" class="bg-white rounded-3xl border-2 border-indigo-200 shadow-md p-5 sm:p-6 pop-in">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+        <h2 id="other-routes-heading" class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <span aria-hidden="true">🧭</span>
+          <span>Other Possible Routes</span>
+        </h2>
+        <span class="text-xs font-extrabold uppercase tracking-wide bg-indigo-50 text-indigo-800 border border-indigo-200 px-3 py-1 rounded-full">
+          2 Other Ways From Airport
+        </span>
+      </div>
+      <p class="text-sm font-semibold text-slate-600 mb-4">
+        Want another way to make the same trip? Compare these two other routes with clear steps, pros, and cons:
+      </p>
+
+      <div id="other-routes-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Two alternative route cards rendered dynamically via JavaScript -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Simple Footer -->
+  <footer class="bg-white border-t-2 border-slate-200 py-4 px-4 text-center text-xs sm:text-sm font-semibold text-slate-500">
+    Hsinchu Travel Planner • Routes from Taoyuan International Airport
+  </footer>
+
+  <script>
+    // Application state tracking selected destination and travel priority
+    const state = {
+      destination: 'east_gate',
+      priority: 'fastest'
+    };
+
+    // Exact 5 Hsinchu destinations requested
+    const DESTINATIONS = [
+      {
+        id: 'east_gate',
+        name: 'East Gate',
+        emoji: '🏰',
+        note: 'Historic stone tower in downtown Hsinchu'
+      },
+      {
+        id: 'glass_museum',
+        name: 'Hsinchu Glass Museum',
+        emoji: '🔮',
+        note: 'Bright glass art right beside Hsinchu Park'
+      },
+      {
+        id: 'image_museum',
+        name: 'Hsinchu Image Museum',
+        emoji: '🎬',
+        note: 'Classic movie theater on Zhongzheng Road'
+      },
+      {
+        id: 'city_god_temple',
+        name: 'City God Temple',
+        emoji: '🏮',
+        note: 'Old temple and lively street snacks'
+      },
+      {
+        id: 'hsinchu_zoo',
+        name: 'Hsinchu Zoo',
+        emoji: '🐒',
+        note: 'Friendly park zoo with open animal spaces'
+      }
+    ];
+
+    // Visual styling themes for the three travel priorities
+    const PRIORITY_THEMES = {
+      fastest: {
+        badge: '⚡ Fastest Route',
+        badgeClass: 'bg-orange-100 text-orange-900',
+        bannerClass: 'bg-gradient-to-br from-orange-50 to-amber-50/70',
+        activeBtn: 'border-orange-500 bg-orange-100 text-orange-950 shadow-sm scale-[1.02]',
+        idleBtn: 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-orange-50/50 hover:border-orange-200'
+      },
+      cheapest: {
+        badge: '💰 Cheapest Route',
+        badgeClass: 'bg-amber-100 text-amber-900',
+        bannerClass: 'bg-gradient-to-br from-amber-50 to-yellow-50/70',
+        activeBtn: 'border-amber-500 bg-amber-100 text-amber-950 shadow-sm scale-[1.02]',
+        idleBtn: 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-amber-50/50 hover:border-amber-200'
+      },
+      greenest: {
+        badge: '🌱 Greenest Route',
+        badgeClass: 'bg-emerald-100 text-emerald-900',
+        bannerClass: 'bg-gradient-to-br from-emerald-50 to-teal-50/70',
+        activeBtn: 'border-emerald-500 bg-emerald-100 text-emerald-950 shadow-sm scale-[1.02]',
+        idleBtn: 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-emerald-50/50 hover:border-emerald-200'
+      }
+    };
+
+    // Realistic routes from Taoyuan International Airport tailored by destination AND priority
+    const ROUTES = {
+      east_gate: {
+        fastest: {
+          tag: '⚡ Fastest',
+          headline: 'Airport MRT + HSR + Taxi to East Gate',
+          summary: 'Ride Airport MRT and HSR south, then take a quick taxi right to East Gate.',
+          time: '52 mins',
+          cost: 'NT$ 485',
+          steps: [
+            { icon: '🚇', title: 'Airport MRT to Taoyuan HSR', detail: 'Ride from Taoyuan Airport to Taoyuan HSR Station (~17 mins, NT$ 35).' },
+            { icon: '🚄', title: 'HSR to Hsinchu HSR Station', detail: 'Take the high-speed train south to Hsinchu (~11 mins, NT$ 160).' },
+            { icon: '🚕', title: 'Taxi to East Gate', detail: 'Ride across the river into downtown Hsinchu (~18 mins, NT$ 290) and walk 2 mins to the gate.' }
+          ],
+          tip: 'East Gate sits on a big round plaza, so it is super easy to spot from your taxi.',
+          pros: 'Fastest way from the airport with very little walking.',
+          cons: 'Costs the most because of HSR and taxi fares.'
+        },
+        cheapest: {
+          tag: '💰 Cheapest',
+          headline: 'Airport Bus + 7-Min Walk to East Gate',
+          summary: 'Take a budget bus from Taoyuan Airport toward Hsinchu, then walk a short 0.55 km.',
+          time: '82 mins',
+          cost: 'NT$ 145',
+          steps: [
+            { icon: '🚌', title: 'Airport bus toward Hsinchu', detail: 'Board a budget bus at Taoyuan Airport heading to Hsinchu (~75 mins, NT$ 145).' },
+            { icon: '🚶', title: 'Walk 7 mins (0.55 km) to East Gate', detail: 'Follow city sidewalks straight to the round stone East Gate tower.' }
+          ],
+          tip: 'Skipping HSR saves lots of money for snacks and activities in Hsinchu!',
+          pros: 'Very low ticket cost with only a short 7-minute walk at the end.',
+          cons: 'Takes longer than riding HSR and a taxi.'
+        },
+        greenest: {
+          tag: '🌱 Greenest',
+          headline: 'Airport MRT + Train + 3-Min Bike to East Gate',
+          summary: 'Travel by electric rail toward Hsinchu, then take a short 0.55 km bike ride.',
+          time: '88 mins',
+          cost: 'NT$ 195',
+          steps: [
+            { icon: '🚆', title: 'Electric rail toward Hsinchu', detail: 'Ride Airport MRT and connecting electric train service to Hsinchu (~83 mins, NT$ 185).' },
+            { icon: '🚲', title: 'YouBike hop (3 mins / 0.55 km)', detail: 'Ride a city bike gently to a dock near East Gate (NT$ 10).' }
+          ],
+          tip: 'Electric trains plus a short 3-minute bike hop keep emissions low!',
+          pros: 'Eco-friendly electric rail plus a quick, fun bike hop near town.',
+          cons: 'Takes longer than the HSR + taxi route.'
+        }
+      },
+
+      glass_museum: {
+        fastest: {
+          tag: '⚡ Fastest',
+          headline: 'Airport MRT + HSR + Taxi to Glass Museum',
+          summary: 'Take Airport MRT and HSR south, then ride a taxi straight to Hsinchu Glass Museum.',
+          time: '54 mins',
+          cost: 'NT$ 500',
+          steps: [
+            { icon: '🚇', title: 'Airport MRT to Taoyuan HSR', detail: 'Ride from Taoyuan Airport to Taoyuan HSR Station (~17 mins, NT$ 35).' },
+            { icon: '🚄', title: 'HSR to Hsinchu HSR Station', detail: 'Take the high-speed train to Hsinchu (~11 mins, NT$ 160).' },
+            { icon: '🚕', title: 'Taxi to Hsinchu Glass Museum', detail: 'Ride toward Hsinchu Park (~20 mins, NT$ 305) and walk 2 mins to the museum.' }
+          ],
+          tip: 'The Glass Museum is right next to Hsinchu Park, so you will see green trees right away.',
+          pros: 'Gets you to the Glass Museum quickly with almost no walking.',
+          cons: 'Higher fare than bus or train choices.'
+        },
+        cheapest: {
+          tag: '💰 Cheapest',
+          headline: 'Airport Bus + Short Bus or 13-Min Walk',
+          summary: 'Ride a budget airport bus to Hsinchu, then take a short city bus or 1.0 km walk.',
+          time: '92 mins',
+          cost: 'NT$ 160',
+          steps: [
+            { icon: '🚌', title: 'Airport bus toward Hsinchu', detail: 'Ride a budget bus from Taoyuan Airport toward Hsinchu (~77 mins, NT$ 145).' },
+            { icon: '🚶', title: 'Short bus or walk 13 mins (1.0 km)', detail: 'Take a short city bus (~NT$ 15) or walk 1.0 km toward Hsinchu Park and the museum.' }
+          ],
+          tip: 'A 1.0 km walk takes about 13 minutes on flat city streets.',
+          pros: 'Budget-friendly with a short, easy final walk or bus hop.',
+          cons: 'Takes about 38 minutes longer than the fastest route.'
+        },
+        greenest: {
+          tag: '🌱 Greenest',
+          headline: 'Electric Rail + Short Bus or 5-Min Bike',
+          summary: 'Ride electric trains into Hsinchu, then take a short local bus or 1.0 km bike ride.',
+          time: '92 mins',
+          cost: 'NT$ 195',
+          steps: [
+            { icon: '🚆', title: 'Electric rail toward Hsinchu', detail: 'Take Airport MRT and electric train service into Hsinchu (~85 mins, NT$ 185).' },
+            { icon: '🚲', title: 'Short bike ride (5 mins / 1.0 km)', detail: 'Ride a YouBike gently toward Hsinchu Glass Museum near the park (NT$ 10).' }
+          ],
+          tip: 'Watch for sunny glass art pieces sparkling near the museum entrance!',
+          pros: 'Low-emission electric rail plus a short 5-minute bike ride.',
+          cons: 'Needs a working bike or bus connection near the park.'
+        }
+      },
+
+      image_museum: {
+        fastest: {
+          tag: '⚡ Fastest',
+          headline: 'Airport MRT + HSR + Taxi to Image Museum',
+          summary: 'Ride Airport MRT and HSR south, then take a taxi straight to Hsinchu Image Museum.',
+          time: '53 mins',
+          cost: 'NT$ 490',
+          steps: [
+            { icon: '🚇', title: 'Airport MRT to Taoyuan HSR', detail: 'Ride from Taoyuan Airport to Taoyuan HSR Station (~17 mins, NT$ 35).' },
+            { icon: '🚄', title: 'HSR to Hsinchu HSR Station', detail: 'Take the high-speed train south to Hsinchu (~11 mins, NT$ 160).' },
+            { icon: '🚕', title: 'Taxi to Hsinchu Image Museum', detail: 'Ride into central Hsinchu (~19 mins, NT$ 295) and walk 1 min to the front door.' }
+          ],
+          tip: 'Look for the old-style theater sign right along Zhongzheng Road.',
+          pros: 'Fast trip with a 1-minute walk from the taxi drop-off.',
+          cons: 'Costs more than taking a bus or regular train.'
+        },
+        cheapest: {
+          tag: '💰 Cheapest',
+          headline: 'Airport Bus + 6-Min Walk to Image Museum',
+          summary: 'Take a budget bus from Taoyuan Airport toward Hsinchu, then walk just 0.45 km.',
+          time: '82 mins',
+          cost: 'NT$ 145',
+          steps: [
+            { icon: '🚌', title: 'Airport bus toward Hsinchu', detail: 'Board a budget bus at Taoyuan Airport heading toward Hsinchu (~76 mins, NT$ 145).' },
+            { icon: '🚶', title: 'Walk 6 mins (0.45 km) to Image Museum', detail: 'Take an easy 6-minute walk down Zhongzheng Road to the museum.' }
+          ],
+          tip: 'Only 0.45 km on foot—one of the shortest walks of all!',
+          pros: 'Very cheap and only a quick 6-minute walk at the end.',
+          cons: 'Slower than riding HSR and taking a taxi.'
+        },
+        greenest: {
+          tag: '🌱 Greenest',
+          headline: 'Electric Rail + 6-Min Walk or 3-Min Bike',
+          summary: 'Take electric trains into Hsinchu, then walk 0.45 km or take a quick 3-minute bike hop.',
+          time: '88 mins',
+          cost: 'NT$ 185',
+          steps: [
+            { icon: '🚆', title: 'Electric rail toward Hsinchu', detail: 'Ride Airport MRT and electric train service into Hsinchu (~82 mins, NT$ 185).' },
+            { icon: '🚶', title: 'Walk 6 mins (0.45 km) to Image Museum', detail: 'Walk cleanly along city sidewalks right to Hsinchu Image Museum.' }
+          ],
+          tip: 'Walking 0.45 km after the electric train costs NT$ 0 extra and creates zero tailpipe smoke!',
+          pros: 'Clean electric rail and a short walk with no extra bike fee.',
+          cons: 'Takes longer than the HSR + taxi trip.'
+        }
+      },
+
+      city_god_temple: {
+        fastest: {
+          tag: '⚡ Fastest',
+          headline: 'Airport MRT + HSR + Taxi to City God Temple',
+          summary: 'Ride Airport MRT and HSR south, then take a taxi near City God Temple.',
+          time: '54 mins',
+          cost: 'NT$ 495',
+          steps: [
+            { icon: '🚇', title: 'Airport MRT to Taoyuan HSR', detail: 'Ride from Taoyuan Airport to Taoyuan HSR Station (~17 mins, NT$ 35).' },
+            { icon: '🚄', title: 'HSR to Hsinchu HSR Station', detail: 'Take the high-speed train south to Hsinchu (~11 mins, NT$ 160).' },
+            { icon: '🚕', title: 'Taxi near City God Temple', detail: 'Ride toward the old temple area (~19 mins, NT$ 300) and walk 3 mins.' }
+          ],
+          tip: 'Ask the driver to stop on a wider street nearby so you can stroll right into the temple area.',
+          pros: 'Quickest way to reach City God Temple from the airport.',
+          cons: 'Most expensive option because of HSR and taxi fares.'
+        },
+        cheapest: {
+          tag: '💰 Cheapest',
+          headline: 'Airport Bus + 12-Min Walk to City God Temple',
+          summary: 'Take a budget airport bus toward Hsinchu, then walk 0.9 km to City God Temple.',
+          time: '90 mins',
+          cost: 'NT$ 145',
+          steps: [
+            { icon: '🚌', title: 'Airport bus toward Hsinchu', detail: 'Ride a budget bus from Taoyuan Airport toward Hsinchu (~78 mins, NT$ 145).' },
+            { icon: '🚶', title: 'Walk 12 mins (0.9 km) to City God Temple', detail: 'Walk 0.9 km through town to reach City God Temple.' }
+          ],
+          tip: 'A 12-minute walk helps you get ready for tasty Hsinchu snacks!',
+          pros: 'Low budget fare with a manageable 0.9 km walk.',
+          cons: 'Takes about 36 minutes longer than the fastest route.'
+        },
+        greenest: {
+          tag: '🌱 Greenest',
+          headline: 'Electric Rail + Short Bus or 4-Min Bike',
+          summary: 'Ride electric trains toward Hsinchu, then take a short city bus or 0.85 km bike hop.',
+          time: '90 mins',
+          cost: 'NT$ 195',
+          steps: [
+            { icon: '🚆', title: 'Electric rail toward Hsinchu', detail: 'Take Airport MRT and electric train service into Hsinchu (~84 mins, NT$ 185).' },
+            { icon: '🚲', title: 'Short bike hop (4 mins / 0.85 km)', detail: 'Ride a YouBike to a dock nearby and walk 2 mins to City God Temple (NT$ 10).' }
+          ],
+          tip: 'Park at a nearby dock and walk the last bit so crowded lanes stay easy to navigate.',
+          pros: 'Greener public transit with only a short bike and walk hop.',
+          cons: 'Slower than taking HSR and a taxi.'
+        }
+      },
+
+      hsinchu_zoo: {
+        fastest: {
+          tag: '⚡ Fastest',
+          headline: 'Airport MRT + HSR + Taxi to Hsinchu Zoo',
+          summary: 'Ride Airport MRT and HSR south, then take a taxi straight to Hsinchu Zoo.',
+          time: '55 mins',
+          cost: 'NT$ 510',
+          steps: [
+            { icon: '🚇', title: 'Airport MRT to Taoyuan HSR', detail: 'Ride from Taoyuan Airport to Taoyuan HSR Station (~17 mins, NT$ 35).' },
+            { icon: '🚄', title: 'HSR to Hsinchu HSR Station', detail: 'Take the high-speed train south to Hsinchu (~11 mins, NT$ 160).' },
+            { icon: '🚕', title: 'Taxi to Hsinchu Zoo', detail: 'Ride toward Hsinchu Zoo (~21 mins, NT$ 315) and walk 2 mins to the entrance.' }
+          ],
+          tip: 'Arriving fast saves your energy for spotting animals around the zoo!',
+          pros: 'Fastest arrival with a short 2-minute walk to the zoo gate.',
+          cons: 'Higher cost than taking a bus or train.'
+        },
+        cheapest: {
+          tag: '💰 Cheapest',
+          headline: 'Airport Bus + Short Local Bus or 15-Min Walk',
+          summary: 'Take a budget airport bus to Hsinchu, then take a short local bus or 1.1 km walk.',
+          time: '95 mins',
+          cost: 'NT$ 160',
+          steps: [
+            { icon: '🚌', title: 'Airport bus toward Hsinchu', detail: 'Ride a budget bus from Taoyuan Airport toward Hsinchu (~80 mins, NT$ 145).' },
+            { icon: '🚌', title: 'Short bus or walk 15 mins (1.1 km)', detail: 'Hop on a short city bus (~NT$ 15) or walk 1.1 km to Hsinchu Zoo.' }
+          ],
+          tip: 'Walking 1.1 km takes about 15 minutes and saves the extra bus fare.',
+          pros: 'Budget-friendly with a short final bus or 1.1 km walk.',
+          cons: 'Takes about 40 minutes longer than the fastest route.'
+        },
+        greenest: {
+          tag: '🌱 Greenest',
+          headline: 'Electric Rail + Short Bus or 6-Min Bike',
+          summary: 'Ride electric trains toward Hsinchu, then take a short local bus or 1.1 km bike ride.',
+          time: '94 mins',
+          cost: 'NT$ 195',
+          steps: [
+            { icon: '🚆', title: 'Electric rail toward Hsinchu', detail: 'Take Airport MRT and electric train service into Hsinchu (~86 mins, NT$ 185).' },
+            { icon: '🚲', title: 'Short bike ride (6 mins / 1.1 km)', detail: 'Ride a YouBike gently to a dock near Hsinchu Zoo (NT$ 10).' }
+          ],
+          tip: 'A 6-minute bike ride near the park is clean, breezy, and fun!',
+          pros: 'Low-emission electric rail plus a short 6-minute bike ride.',
+          cons: 'Takes longer than taking HSR and a taxi.'
+        }
+      }
+    };
+
+    // Render destination cards for Step 1
+    function renderDestinations() {
+      const container = document.getElementById('destination-grid');
+      container.innerHTML = DESTINATIONS.map(dest => {
+        const selected = dest.id === state.destination;
+        const classes = selected
+          ? 'border-sky-500 bg-sky-50 text-sky-950 shadow-sm ring-2 ring-sky-200'
+          : 'border-slate-200 bg-white text-slate-800 hover:border-sky-300 hover:bg-sky-50/40';
+
+        return `
+          <button
+            type="button"
+            onclick="selectDestination('${dest.id}')"
+            aria-pressed="${selected}"
+            class="p-3.5 rounded-2xl border-2 text-left transition cursor-pointer flex items-center gap-3 ${classes}"
+          >
+            <span class="text-2xl sm:text-3xl shrink-0" aria-hidden="true">${dest.emoji}</span>
+            <div class="min-w-0">
+              <div class="font-extrabold text-sm sm:text-base leading-snug">${dest.name}</div>
+              <div class="text-xs font-bold text-slate-500 mt-0.5">${dest.note}</div>
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    // Update active/inactive styling for Step 2 priority buttons
+    function renderPriorityButtons() {
+      ['fastest', 'cheapest', 'greenest'].forEach(key => {
+        const btn = document.getElementById(`btn-${key}`);
+        const selected = state.priority === key;
+        btn.setAttribute('aria-pressed', selected);
+        btn.className = `p-3 sm:p-4 rounded-2xl border-2 font-bold text-center transition cursor-pointer flex flex-col items-center justify-center gap-1 ${
+          selected ? PRIORITY_THEMES[key].activeBtn : PRIORITY_THEMES[key].idleBtn
+        }`;
+      });
+    }
+
+    // Render the selected main route card and trigger the 2 other routes
+    function renderMainRoute() {
+      const destObj = DESTINATIONS.find(d => d.id === state.destination);
+      const route = ROUTES[state.destination][state.priority];
+      const theme = PRIORITY_THEMES[state.priority];
+
+      const card = document.getElementById('main-route-card');
+      card.classList.remove('pop-in');
+      void card.offsetWidth;
+      card.classList.add('pop-in');
+
+      document.getElementById('route-banner').className = `p-5 sm:p-6 border-b-2 border-slate-100 ${theme.bannerClass}`;
+
+      const badge = document.getElementById('route-badge');
+      badge.className = `inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-sm font-extrabold ${theme.badgeClass}`;
+      badge.textContent = theme.badge;
+
+      document.getElementById('route-dest-pill').textContent = `${destObj.emoji} ${destObj.name}`;
+      document.getElementById('route-headline').textContent = route.headline;
+      document.getElementById('route-summary').textContent = route.summary;
+      document.getElementById('stat-time').textContent = route.time;
+      document.getElementById('stat-cost').textContent = route.cost;
+      document.getElementById('route-tip').textContent = route.tip;
+
+      const stepList = document.getElementById('step-list');
+      stepList.innerHTML = route.steps.map((step, index) => `
+        <li class="flex items-start gap-3.5 bg-slate-50 rounded-2xl p-3.5 sm:p-4 border border-slate-200/80">
+          <div class="w-9 h-9 rounded-xl bg-white border-2 border-slate-200 flex items-center justify-center text-xl shrink-0" aria-hidden="true">
+            ${step.icon}
+          </div>
+          <div>
+            <div class="font-extrabold text-sm sm:text-base text-slate-900">
+              Step ${index + 1}: ${step.title}
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600 font-semibold mt-0.5 leading-relaxed">
+              ${step.detail}
+            </p>
+          </div>
+        </li>
+      `).join('');
+
+      renderOtherRoutes();
+    }
+
+    // Always render 2 realistic alternative route cards with steps, pros, and cons
+    function renderOtherRoutes() {
+      const section = document.getElementById('other-routes-section');
+      section.classList.remove('pop-in');
+      void section.offsetWidth;
+      section.classList.add('pop-in');
+
+      const allPriorities = ['fastest', 'cheapest', 'greenest'];
+      const alternativeKeys = allPriorities.filter(p => p !== state.priority);
+      const container = document.getElementById('other-routes-list');
+
+      container.innerHTML = alternativeKeys.map(altKey => {
+        const altRoute = ROUTES[state.destination][altKey];
+        const altStepsHtml = altRoute.steps.map((s, i) => `
+          <li class="text-xs text-slate-700 font-semibold flex items-start gap-1.5">
+            <span class="font-extrabold text-slate-900 shrink-0">${i + 1}.</span>
+            <span><strong>${s.title}:</strong> ${s.detail}</span>
+          </li>
+        `).join('');
+
+        return `
+          <article class="rounded-2xl border-2 border-slate-200 bg-slate-50/80 p-4 flex flex-col justify-between gap-3.5">
+            <div>
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-extrabold px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-800">
+                  ${altRoute.tag}
+                </span>
+                <span class="text-xs font-extrabold text-slate-700">
+                  ⏱️ ${altRoute.time} • 💵 ${altRoute.cost}
+                </span>
+              </div>
+
+              <h3 class="font-bold text-base sm:text-lg text-slate-900 leading-snug">
+                ${altRoute.headline}
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 font-semibold mt-1 leading-relaxed">
+                ${altRoute.summary}
+              </p>
+
+              <ol class="mt-3 space-y-1.5 bg-white rounded-xl p-3 border border-slate-200/80">
+                ${altStepsHtml}
+              </ol>
+            </div>
+
+            <div class="space-y-1.5 pt-2.5 border-t border-slate-200 text-xs font-bold">
+              <div class="text-emerald-800 flex items-start gap-1.5">
+                <span aria-hidden="true">👍</span>
+                <span><strong>Pro:</strong> ${altRoute.pros}</span>
+              </div>
+              <div class="text-amber-900 flex items-start gap-1.5">
+                <span aria-hidden="true">🤔</span>
+                <span><strong>Con:</strong> ${altRoute.cons}</span>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // Handle destination button click
+    function selectDestination(destId) {
+      state.destination = destId;
+      renderDestinations();
+      renderMainRoute();
+    }
+
+    // Handle travel priority button click
+    function selectPriority(priorityKey) {
+      state.priority = priorityKey;
+      renderPriorityButtons();
+      renderMainRoute();
+    }
+
+    // Initialize UI on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderDestinations();
+      renderPriorityButtons();
+      renderMainRoute();
+    });
+  </script>
+</body>
+</html>
