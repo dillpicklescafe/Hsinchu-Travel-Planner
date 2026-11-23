@@ -78,6 +78,14 @@ const DESTS = [
   }
 ];
 
+const AIRPORT_TO_HSINCHU = {
+  name: "Airport MRT + HSR",
+  steps: ["🚇", "🚄"],
+  minutes: 45,
+  price: 160,
+  co2: 0.3
+};
+
 const GOALS = [
   {
     id: "fast",
@@ -224,9 +232,18 @@ function renderResults() {
   }
 
   // Sort by the selected goal, then by travel time to break ties.
-  const sortedRoutes = [...destination.routes].sort(
-    (a, b) => a[goal.key] - b[goal.key] || a.minutes - b.minutes
-  );
+  const sortedRoutes = destination.routes
+    .map(route => ({
+      ...route,
+      name: `${AIRPORT_TO_HSINCHU.name} + ${route.name}`,
+      steps: [...AIRPORT_TO_HSINCHU.steps, ...route.steps],
+      minutes: AIRPORT_TO_HSINCHU.minutes + route.minutes,
+      price: AIRPORT_TO_HSINCHU.price + route.price,
+      co2: AIRPORT_TO_HSINCHU.co2 + route.co2
+    }))
+    .sort(
+      (a, b) => a[goal.key] - b[goal.key] || a.minutes - b.minutes
+    );
   const bestRoute = sortedRoutes[0];
 
   const bestSection = document.createElement("section");
